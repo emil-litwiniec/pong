@@ -2,7 +2,7 @@
 
 import useWebSocket from 'react-use-websocket';
 
-const WS_URL = 'ws://localhost:8080';
+const WS_URL = 'ws://localhost:3001';
 
 export const Game = () => {
   const { sendMessage } = useWebSocket(WS_URL);
