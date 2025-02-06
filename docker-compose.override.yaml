@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  backend:
+    develop:
+      watch:
+        - path: ./pnpm-lock.yaml
+          action: rebuild
+  frontend:
+    develop:
+      watch:
+        - path: ./pnpm-lock.yaml
+          action: rebuild

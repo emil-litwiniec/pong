@@ -20,6 +20,7 @@ services:
       dockerfile: apps/backend/Dockerfile.dev
     ports:
       - '3001:3001'
+      - '8080:8080'
     volumes:
       - .:/app
       - /app/node_modules
