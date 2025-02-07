@@ -1,4 +1,4 @@
-import { Game } from './_components/game';
+import { GameWrapper } from './_components/gameWrapper';
 
 export default function Index() {
   return (
@@ -7,7 +7,7 @@ export default function Index() {
         <span> Hello there, </span>
         Welcome PONG 👋
       </h1>
-      <Game />
+      <GameWrapper />
     </div>
   );
 }
