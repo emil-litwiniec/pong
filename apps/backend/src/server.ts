@@ -1,11 +1,14 @@
 import { createServer } from 'http';
 import { app } from './app';
 import { createWebSocketServer } from './ws';
-import { port } from './config';
+import config from './config';
+import { ticker } from './libs/ticker';
 
 const server = createServer(app);
 createWebSocketServer(server);
 
-server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+ticker.start();
+
+server.listen(config.PORT, () => {
+  console.log(`Server listening on port ${config.PORT}`);
 });
