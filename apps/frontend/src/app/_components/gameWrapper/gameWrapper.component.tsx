@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Scene } from '../../_lib/three/scene';
+import { Scene } from '../../_lib/three';
 
 export const GameWrapper = () => {
   const sceneTargetRef = useRef<HTMLDivElement>(null);
