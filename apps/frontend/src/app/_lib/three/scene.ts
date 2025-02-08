@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { RefObject } from 'react';
 import { Renderer } from './renderer';
-import { Bar } from './objects';
+import { Ball, Paddle } from './objects';
 
 type TargetRef = RefObject<HTMLDivElement | null>;
 
@@ -34,7 +34,8 @@ export class Scene {
   async init() {
     this.initLights();
     this.initSurface();
-    await this.loadBars();
+    await this.loadPaddles();
+    await this.loadBall();
   }
 
   private initLights() {
@@ -57,29 +58,47 @@ export class Scene {
 
   private initSurface() {
     const dim = 100;
-    const planeGeometry = new THREE.PlaneGeometry(dim, dim); // Width, Height
-    const planeMaterial = new THREE.MeshStandardMaterial({ color: '#ffffff' });
+    const planeGeometry = new THREE.PlaneGeometry(dim, dim);
+    const planeMaterial = new THREE.MeshStandardMaterial({ color: '#7AA4FF' });
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.rotation.x = -Math.PI / 2;
     plane.position.y = 0;
     this.scene.add(plane);
   }
 
-  async loadBars() {
-    const bar = await new Bar().load();
-    if (!bar.model) {
+  async loadPaddles() {
+    const paddle = await new Paddle().load();
+    if (!paddle.model) {
       // TODO: Better Error handling
-      console.error('Bar model does not exist.');
+      console.error('Paddle model does not exist.');
       return;
     }
 
     await this.renderer?.renderer.compileAsync(
-      bar.model,
+      paddle.model,
       this.camera,
       this.scene
     );
 
-    this.scene.add(bar.model);
+    this.scene.add(paddle.model);
+    this.renderer?.render();
+  }
+
+  async loadBall() {
+    const ball = await new Ball().load();
+    if (!ball.model) {
+      // TODO: Better Error handling
+      console.error('Ball model does not exist.');
+      return;
+    }
+
+    await this.renderer?.renderer.compileAsync(
+      ball.model,
+      this.camera,
+      this.scene
+    );
+
+    this.scene.add(ball.model);
     this.renderer?.render();
   }
 

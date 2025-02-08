@@ -1,1 +1,2 @@
-export * from './bar';
+export * from './paddle';
+export * from './ball';

@@ -3,12 +3,12 @@ import * as THREE from 'three';
 import { ModelLoader } from '../../modelLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-export class Bar {
+export class Paddle {
   model: GLTF['scene'] | null = null;
 
   public async load() {
     const loader = new ModelLoader();
-    const { scene: modelScene } = await loader.load('pong_bar.glb');
+    const { scene: modelScene } = await loader.load('paddle.glb');
 
     this.model = modelScene;
 
@@ -18,7 +18,7 @@ export class Bar {
       }
     });
 
-    this.model.position.set(0, 0, 0);
+    this.model.position.set(0, 1, 0);
 
     return this;
   }
