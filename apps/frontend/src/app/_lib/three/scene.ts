@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import { RefObject } from 'react';
 import { Renderer } from './renderer';
+import { Bar } from './objects';
 
 type TargetRef = RefObject<HTMLDivElement | null>;
 
@@ -24,6 +25,62 @@ export class Scene {
     this.renderer = new Renderer(this.scene, this.camera);
     ref.current?.appendChild(this.renderer.renderer.domElement);
     this.renderer.animate();
+
+    this.camera.position.set(0, 20, 0);
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    this.init();
+  }
+
+  async init() {
+    this.initLights();
+    this.initSurface();
+    await this.loadBars();
+  }
+
+  private initLights() {
+    const ambientLight = new THREE.AmbientLight(0x404040, 1);
+    this.scene.add(ambientLight);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+    this.scene.add(hemiLight);
+
+    const dirLight1 = new THREE.DirectionalLight(0xf7fed9, 1);
+    dirLight1.position.set(10, 10, 10);
+    dirLight1.castShadow = true;
+    this.scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0xfd91e1, 1);
+    dirLight2.position.set(-10, 8, -10);
+    dirLight2.castShadow = true;
+    this.scene.add(dirLight2);
+  }
+
+  private initSurface() {
+    const dim = 100;
+    const planeGeometry = new THREE.PlaneGeometry(dim, dim); // Width, Height
+    const planeMaterial = new THREE.MeshStandardMaterial({ color: '#ffffff' });
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = 0;
+    this.scene.add(plane);
+  }
+
+  async loadBars() {
+    const bar = await new Bar().load();
+    if (!bar.model) {
+      // TODO: Better Error handling
+      console.error('Bar model does not exist.');
+      return;
+    }
+
+    await this.renderer?.renderer.compileAsync(
+      bar.model,
+      this.camera,
+      this.scene
+    );
+
+    this.scene.add(bar.model);
+    this.renderer?.render();
   }
 
   public dispose() {
