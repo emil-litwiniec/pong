@@ -1,1 +1,4 @@
-export const port = process.env.PORT || 3001;
+export default {
+  PORT: process.env.PORT || 3001,
+  FPS: 60,
+};
