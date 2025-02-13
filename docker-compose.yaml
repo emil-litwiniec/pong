@@ -24,4 +24,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     command: pnpm dev:backend # Runs NX script
