@@ -30,6 +30,7 @@
     "@swc/helpers": "~0.5.11",
     "@testing-library/react": "16.1.0",
     "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.1",
     "@types/jest": "^29.5.12",
     "@types/node": "18.16.9",
     "@types/react": "19.0.0",
@@ -64,13 +65,20 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@types/cookie": "^1.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/uuid": "^10.0.0",
     "axios": "^1.6.0",
+    "cookie": "^1.0.2",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "next": "~15.1.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-use-websocket": "^4.13.0",
     "three": "^0.173.0",
+    "uuid": "^11.0.5",
     "ws": "^8.18.0"
   }
 }
