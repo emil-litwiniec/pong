@@ -13,6 +13,8 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
     command: pnpm dev:frontend # Runs NX script
 
   backend:
