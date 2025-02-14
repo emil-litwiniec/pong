@@ -14,8 +14,7 @@ export type Board = {
   obstacles: unknown[];
 };
 
-export type GameConfig =
-  | {
-      board?: Board;
-    }
-  | undefined;
+export type GameConfig = {
+  roomId: string;
+  board?: Board;
+};

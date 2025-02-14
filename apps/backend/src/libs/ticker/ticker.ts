@@ -31,7 +31,7 @@ class Ticker {
     let delta = now - this.lastTime;
 
     while (delta >= this.frameTime) {
-      this.callSubscribers(delta);
+      this.callSubscribers(delta, now);
 
       this.lastTime += this.frameTime;
       delta -= this.frameTime;
@@ -40,9 +40,9 @@ class Ticker {
     setImmediate(this.tick.bind(this));
   }
 
-  private callSubscribers(delta: number) {
+  private callSubscribers(delta: number, time: number) {
     this.subscribers.forEach((subscriber) => {
-      subscriber(delta);
+      subscriber(delta, time);
     });
   }
 

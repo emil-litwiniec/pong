@@ -27,7 +27,7 @@ services:
     volumes:
       - .:/app # Mount the entire project (including shared package.json)
       - backend-node_modules:/app/node_modules # Named volume for node_modules
-      - ./apps/backend:/app/apps/backend # Bind mount for frontend code
+      - ./apps/backend:/app/apps/backend # Bind mount for backend code
     command: pnpm dev:backend # Runs NX script
 volumes:
   frontend-node_modules:
