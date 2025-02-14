@@ -6,19 +6,18 @@ import { useEffect } from 'react';
 
 export default function Index() {
   useEffect(() => {
-    fetch('http://localhost:3001/api');
+    fetch(process.env.NEXT_PUBLIC_API_URL || '');
   }, []);
 
-  const { sendJsonMessage, lastMessage } = useWebSocket('ws://localhost:3001');
+  const { sendJsonMessage } = useWebSocket(
+    process.env.NEXT_PUBLIC_WS_URL || ''
+  );
   const handleSendMessage = () => {
     sendJsonMessage({
       type: 'join',
     });
   };
 
-  useEffect(() => {
-    console.warn('DEBUG[68]: page.tsx:21: lastMessage=', lastMessage);
-  }, [lastMessage]);
   return (
     <div>
       <button onClick={handleSendMessage}>Send message</button>

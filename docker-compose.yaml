@@ -8,11 +8,14 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/app # Mount the entire project (including shared package.json)
+      - frontend-node_modules:/app/node_modules # Named volume for node_modules
+      - ./apps/frontend:/app/apps/frontend # Bind mount for frontend code
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
     command: pnpm dev:frontend # Runs NX script
 
   backend:
@@ -22,9 +25,10 @@ services:
     ports:
       - '3001:3001'
     volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
+      - .:/app # Mount the entire project (including shared package.json)
+      - backend-node_modules:/app/node_modules # Named volume for node_modules
+      - ./apps/backend:/app/apps/backend # Bind mount for backend code
     command: pnpm dev:backend # Runs NX script
+volumes:
+  frontend-node_modules:
+  backend-node_modules:

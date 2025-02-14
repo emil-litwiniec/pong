@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { RefObject } from 'react';
 import { Renderer } from './renderer';
 import { Ball, Paddle } from './objects';
+import { GameState } from '@pong/shared';
 
 type TargetRef = RefObject<HTMLDivElement | null>;
 
@@ -16,6 +17,8 @@ export class Scene {
     75,
     window.innerWidth / window.innerHeight
   );
+
+  ball: Ball | null = null;
 
   constructor(ref: TargetRef) {
     this.ref = ref;
@@ -99,7 +102,16 @@ export class Scene {
     );
 
     this.scene.add(ball.model);
+    this.ball = ball;
     this.renderer?.render();
+  }
+
+  setState(state: GameState) {
+    const ballPosition = this.ball?.model?.position;
+
+    if (ballPosition) {
+      ballPosition.x = state.ball.position.x;
+    }
   }
 
   public dispose() {

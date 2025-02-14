@@ -1,4 +1,4 @@
 export default {
-  PORT: process.env.PORT || 3001,
-  FPS: 60,
+  PORT: process.env.BACKEND_PORT || 3001,
+  FPS: process.env.FPS || 60,
 };

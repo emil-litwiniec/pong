@@ -7,6 +7,7 @@ import * as cookie from 'cookie';
 import { ExtendedWebSocket } from './types';
 import { handleWsMessage } from './wsMessage';
 import { ab2str } from '../libs/parsers';
+import { gameManager } from '../libs/gameManager/gameManager';
 
 export const createWebSocketServer = (server: Server) => {
   const wss = new WebSocketServer({ server });
@@ -22,6 +23,14 @@ export const createWebSocketServer = (server: Server) => {
 
     const cookies = cookie.parse(req.headers.cookie);
     const sessionId = cookies['connect.sid'];
+
+    const game = gameManager.create('test');
+    game.addUpdateListener((state) =>
+      ws.send(JSON.stringify({ type: 'state', data: state }))
+    );
+
+    game.run();
+
     ws.sessionId = sessionId;
 
     if (!sessionId) throw new Error('No session id found.');

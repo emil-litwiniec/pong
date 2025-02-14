@@ -1,1 +1,1 @@
-export type TickerSubscriber = (delta: number) => void;
+export type TickerSubscriber = (delta: number, time: number) => void;
