@@ -1,56 +1,55 @@
 import { v4 } from 'uuid';
+import { Room } from './room';
 
 export class RoomsMenager {
-  public rooms = new Map<string, string[]>();
+  public rooms = new Map<string, Room>();
 
   public open(sessionId: string) {
-    const roomId = v4();
-    this.rooms.set(roomId, [sessionId]);
+    const room = new Room();
+    room.join({
+      name: '',
+      id: sessionId,
+    });
 
-    return roomId;
-  }
+    this.rooms.set(room.id, room);
 
-  private _join(sessionId: string, roomId: string) {
-    const room = this.rooms.get(roomId);
-
-    this.rooms.set(roomId, [...room, sessionId]);
-    return roomId;
+    return room.id;
   }
 
   public join(sessionId: string) {
-    const existingRoom = this.findRoomBySessionId(sessionId);
+    const existingRoom = this.getRoomByPlayerId(sessionId);
+
     if (existingRoom) {
-      return existingRoom[0];
+      return existingRoom.id;
     }
-    const roomToJoin = Array.from(this.rooms.entries()).find(
-      ([, sessionIds]) => sessionIds.length === 1
+
+    const roomToJoin = Array.from(this.rooms.values()).find(
+      (room) => room.canBeJoined
     );
 
     return roomToJoin
-      ? this._join(sessionId, roomToJoin[0])
+      ? roomToJoin.join({
+          name: '',
+          id: sessionId,
+        })
       : this.open(sessionId);
   }
 
   public leave(sessionId: string) {
-    const room = this.findRoomBySessionId(sessionId);
+    const room = this.getRoomByPlayerId(sessionId);
 
     if (!room) return;
 
-    const [roomId, sessionIds] = room;
-
-    if (sessionIds.length === 1) {
-      this.rooms.delete(roomId);
+    if (room.isEmpty) {
+      this.rooms.delete(room.id);
     } else {
-      this.rooms.set(
-        roomId,
-        sessionIds.filter((id) => id !== sessionId)
-      );
+      room.leave(sessionId);
     }
   }
 
-  private findRoomBySessionId(sessionId: string) {
-    const room = Array.from(this.rooms.entries()).find(([, sessionIds]) =>
-      sessionIds.includes(sessionId)
+  private getRoomByPlayerId(playerId: string) {
+    const room = Array.from(this.rooms.values()).find((r) =>
+      r.hasPlayer(playerId)
     );
 
     return room;

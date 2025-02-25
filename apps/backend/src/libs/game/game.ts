@@ -44,7 +44,7 @@ export class Game {
     ticker.subscribe(this.update.bind(this));
   }
 
-  private update(td: number, time: number) {
+  private update(delta: number, time: number) {
     const frequency = 0.1;
     const amplitude = 10;
 
